@@ -12,14 +12,17 @@
 /* Dizaino sistema ta pati kaip kliento puslapiuose (Čili v4.2). Spalvos: žalia = DI veiksmas, geltona = žmogaus sprendimas, raudona = stabdis, juoda = pagrindinis veiksmas. */
 :root{
   --bg:#faf9f6; --surface:#ffffff; --ink:#171717; --muted:#6b6b6b; --line:#dedcd6; --line-strong:#171717;
-  --ai:#0b6e4f; --ai-ink:#ffffff; --hu:#f2c94c; --hu-ink:#171717; --stop:#b42318; --stop-ink:#ffffff;
+  --ai:#0b6e4f; --ai-ink:#ffffff; --hu:#f2c94c; --hu-ink:#171717; --stop:#b42318; --stop-ink:#ffffff; --cta:#171717; --cta-ink:#ffffff;
   --f-display:"Literata", Georgia, "Times New Roman", serif;
   --f-body:"IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
   --f-mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
 }
-@media (prefers-color-scheme: dark){:root{
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#161615; --surface:#1f1f1d; --ink:#ecebe6; --muted:#aaa8a0; --line:#3a3936; --line-strong:#ecebe6;
-  --ai:#2e9a72; --stop:#d9453a; color-scheme:dark}}
+  --ai:#2e9a72; --stop:#d9453a; --cta:#ecebe6; --cta-ink:#171717; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#161615; --surface:#1f1f1d; --ink:#ecebe6; --muted:#aaa8a0; --line:#3a3936; --line-strong:#ecebe6;
+  --ai:#2e9a72; --stop:#d9453a; --cta:#ecebe6; --cta-ink:#171717; color-scheme:dark}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;padding:0 16px 72px}
@@ -72,9 +75,28 @@ header{display:flex;flex-direction:column;gap:22px;padding-top:6px}
 .sources summary:hover{color:var(--ink)}
 .sources summary:focus-visible{outline:3px solid var(--ai);outline-offset:2px}
 .sources ul{margin-top:14px}
-.contact{font-size:17px;display:flex;flex-direction:column;gap:6px}
-.contact span{user-select:all}
+.cta-box{background:var(--cta);color:var(--cta-ink);border-radius:8px;padding:32px 28px;display:flex;flex-direction:column;gap:16px}
+.cta-box h2{font-size:clamp(26px,4.4vw,34px);color:var(--cta-ink)}
+.cta-box p{font-size:18px;line-height:1.5;color:var(--cta-ink)}
+.cta-box .step1{border-top:1px solid color-mix(in srgb,var(--cta-ink) 30%,transparent);padding-top:16px}
+.cta-box .ct{display:flex;flex-wrap:wrap;gap:6px 28px;font-size:17px}
+.cta-box .ct span{user-select:all;font-weight:600}
+.pick{font-size:18px;line-height:1.5}
 .src{font-size:15px;color:var(--muted);word-break:break-word}
+.list-plain{list-style:none;padding:0;gap:10px}
+.list-plain li{padding-left:22px;position:relative}
+.list-plain li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:10px;border-radius:50%;border:2px solid var(--line-strong)}
+.no-list li::before{background:var(--stop);border-color:var(--stop)}
+.faq{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line);padding:14px 0}
+.faq summary{cursor:pointer;font-family:var(--f-display);font-size:18px;font-weight:700;line-height:1.3}
+.faq summary:focus-visible{outline:3px solid var(--ai);outline-offset:2px}
+.faq details p{margin-top:10px;font-size:16px}
+.first-call{font-size:17px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline}
+.first-call span{user-select:all;font-weight:600}
+.cta-who{display:flex;gap:18px;align-items:center}
+.cta-who img{width:88px;height:88px;border-radius:6px;object-fit:cover;flex:none}
+.cta-who .ct{flex-direction:column;gap:4px}
 footer{border-top:1px solid var(--line);padding-top:16px;font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
 </style>
 </head>
@@ -96,19 +118,43 @@ footer{border-top:1px solid var(--line);padding-top:16px;font-size:15px;color:va
   </div>
   <div class="benefits">
     <div class="card"><h3>Mažiau nuostolių</h3><p>Pasirinkto proceso informacija tikrinama pagal patvirtintą taisyklę. Neatitikimą tvirtintojas mato anksčiau nei klientas, o pilotas skaičiuoja, kiek jų sugauta.</p></div>
-    <div class="card"><h3>Greičiau ir tiksliau</h3><p>DI palygina šaltinius ir parengia pakeitimą, žmogus tik patvirtina. Matyti, kas patvirtino ir nuo kada reikšmė galioja.</p></div>
-    <div class="card"><h3>Daugiau laiko klientams</h3><p>Darbuotojai nebeieško, kuri versija teisinga. Žinios kaupiasi įmonėje, ne žmonių galvose ar pokalbių istorijoje.</p></div>
+    <div class="card"><h3>Greičiau ir tiksliau</h3><p>DI palygina šaltinius ir parengia pakeitimą, žmogus patvirtina, pataiso arba atmeta. Matyti, kas patvirtino ir nuo kada reikšmė galioja.</p></div>
+    <div class="card"><h3>Daugiau laiko klientams</h3><p>Tikslas: darbuotojai greičiau randa patvirtintą versiją. Žinios kaupiasi įmonėje, ne žmonių galvose ar pokalbių istorijoje.</p></div>
   </div>
+  <p class="first-call"><strong>Pirmas pokalbis telefonu:</strong> <span>+370 614 48690</span></p>
+  <p class="pick"><strong>Siūlau pradėti nuo diagnostikos ir piloto vienam procesui. Mastelį statome po to, kartu su mano rekomenduojama arba jūsų pasirinkta IT kompanija.</strong></p>
 </header>
+
+<section class="section" id="pazystama">
+  <span class="eyebrow">Ar pažįstama?</span>
+  <h2>Kada verta pradėti nuo vieno proceso</h2>
+  <ul class="list-plain">
+    <li>Komanda naudoja ChatGPT ar Claude, bet kiekvienas savaip, ir nėra kaip palyginti rezultatų.</li>
+    <li>Svarbi informacija saugoma keliose vietose, ir ne visada aišku, kuri versija teisinga.</li>
+    <li>Patyrusių darbuotojų žinios lieka jų galvose, o nauji žmonės ilgai ieško, kur kas užrašyta.</li>
+    <li>Įrankių ar licencijų nupirkta, bet sunku pasakyti, ką jie davė įmonei.</li>
+  </ul>
+  <p>Jei bent du punktai pažįstami, pradėti verta nuo vieno proceso, ne nuo viso įmonės.</p>
+</section>
+
+<section class="section" id="trys">
+  <span class="eyebrow">Kaip prasideda</span>
+  <h2>Trys žingsniai pradžiai</h2>
+  <div class="benefits">
+    <div class="card"><h3>1. Pokalbis telefonu</h3><p>Trumpai aptariame, kur informacija dubliuojasi ir kuris procesas galėtų būti pirmas.</p></div>
+    <div class="card"><h3>2. Diagnostika vienoje komandoje</h3><p>Vietoje matome, kaip informacija iš tikrųjų keliauja. Pasirenkame vieną procesą ir vieną rodiklį.</p></div>
+    <div class="card"><h3>3. Vadovų sprendimas</h3><p>Pagal rodiklį sprendžiate, ar daryti pilotą. Išsamus kelias pateiktas žemiau.</p></div>
+  </div>
+</section>
 
 <section class="section" id="kodel">
   <div class="scene">
     <p class="slogan">Ką pasėsi, tą DI padaugins.</p>
     <h3>Kodėl pradedu nuo tvarkos, ne nuo įrankio</h3>
-    <p>Šiandien daugelis įmonių DI diegia greitai: perka licencijas, procesus automatizuoja per kelias savaites. Bet automatas be žmogaus patikros klaidos neištaiso. Jis ją kartoja, kol kas nors pastebi. Mokslininkai rodo, kad DI modeliai, mokomi iš DI sukurto turinio, klaidas ne taiso, o negrįžtamai jas įtvirtina (Nature, 2024). Kai klaida pasiekia klientą, atsako įmonė: Air Canada teko atlyginti žalą už taisyklę, kurią klientui sugalvojo jos pokalbių robotas (2024). Pernai 42 % įmonių atsisakė daugumos savo DI iniciatyvų (S&P Global, 2025).</p>
+    <p>Šiandien daugelis įmonių DI diegia greitai: perka licencijas, procesus automatizuoja per kelias savaites. Bet automatas be žmogaus patikros klaidos neištaiso. Jis ją kartoja, kol kas nors pastebi. Mokslininkai rodo, kad DI modeliai, mokomi iš DI sukurto turinio, klaidas ne taiso, o negrįžtamai jas įtvirtina (Nature, 2024). Kai klaida pasiekia klientą, atsako įmonė: Air Canada teko atlyginti žalą už taisyklę, kurią klientui sugalvojo jos pokalbių robotas (2024). 2025 m. S&P Global apklausoje 42 % įmonių nurodė atsisakiusios daugumos savo DI iniciatyvų.</p>
     <p>Šią pamoką išmokau dar prieš DI. Nuo 2021 m. Vokietijoje su oConsulting ir eLearningFactory dirbu griežtai reguliuojamoje farmacijos pramonėje. Ten galioja paprasta taisyklė: netvarkingas procesas neautomatizuojamas, nes klaida proceso viduryje kainuoja daugiau, nei sutaupo pagreitinimas.</p>
     <p>Kai atsirado DI, aš irgi daug investavau į įrankius ir greitai pamačiau tą patį: be tvarkos kiekvienas naujas automatas klaidas daugina. Todėl jau dvejus metus praktikoje kuriu sistemą, kuri klaidų skaičių mažina. Iš jos atsirado Second Brain.</p>
-    <p><strong>Jūsų įmonei tai reiškia greitą pilotinį startą ir automatizavimą be padaugintų klaidų: DI dirba iš sutvarkytos informacijos, o kiekviena investicija į DI duoda išmatuojamą rezultatą.</strong></p>
+    <p><strong>Jūsų įmonei tai reiškia greitą pilotinį startą ir automatizavimą su patikra: DI dirba iš sutvarkytos informacijos, o dėl tolesnių investicijų sprendžiate pagal sutartą rodiklį.</strong></p>
   </div>
 </section>
 
@@ -139,18 +185,39 @@ footer{border-top:1px solid var(--line);padding-top:16px;font-size:15px;color:va
     <div class="step gate"><span class="no">Vadovų sprendimas 1</span><h3><span class="b b-hu">Žmogus</span> ar šis procesas ir šis rodiklis</h3></div>
     <div class="step"><span class="no">Etapas 1 · Duomenų tvarka vienam procesui</span><h3>5S duomenims</h3><p>Atrinkti, sutvarkyti, išvalyti, standartizuoti, palaikyti. Rezultatas: patvirtinta bazė, kiekvienas įrašas su šaltiniu ir patikros data.</p></div>
     <div class="step"><span class="no">Etapas 2 · Pilotas</span><h3>Vienas procesas nauju būdu</h3><p><span class="b b-ai">DI</span> surenka ir palygina, <span class="b b-hu">žmogus</span> tvirtina ir publikuoja. Matuojama nuo pirmos dienos. Rezultatas: rodiklis prieš ir po.</p></div>
-    <div class="step gate"><span class="no">Vadovų sprendimas 2</span><h3><span class="b b-hu">Žmogus</span> tęsti, keisti ar stabdyti</h3><p>Tik po šio sprendimo svarstomi modeliai, licencijos, jungtys ir plėtra.</p></div>
+    <div class="step gate"><span class="no">Vadovų sprendimas 2</span><h3><span class="b b-hu">Žmogus</span> tęsti, keisti ar stabdyti</h3><p>Pilote išbandomas modelis ir tik skaitymo jungtys. Po šio sprendimo priimamas galutinis sprendimas dėl modelio, licencijų, rašymo jungčių ir plėtros.</p></div>
     <div class="step"><span class="no">Etapas 3 · Mastelis</span><h3>Kiti procesai, kitos komandos</h3><p>Tik su skaičiumi iš pirmo piloto. Pataisymų žurnalas virsta patvirtintomis taisyklėmis, žmonės mokosi su savo procesu, ne su pavyzdžiais iš kursų.</p></div>
   </div>
 </section>
 
-<section class="section" id="kaip-dirbu">
-  <span class="eyebrow">Kaip dirbu su jumis</span>
-  <h2>Kvieskite mane pradžiai, mastelį statome kartu</h2>
+<section class="section" id="modelis">
+  <span class="eyebrow">Darbo modelis</span>
+  <h2>Kodėl ne didelė konsultacinė įmonė</h2>
   <div class="card">
-    <p>Diagnostiką ir pilotą vedu pats: greitai, lanksčiai ir be ilgų derinimų. Per kelias savaites vienam procesui išbandoma pagrindinė būsimos sistemos logika ir gaunamas skaičius. Tik tada investuojate į mastelį visai įmonei. Mastelį statome kartu su jūsų IT skyriumi ir jūsų esamais tiekėjais. Jei prireiks papildomų pajėgumų, galiu pasiūlyti patikrintus partnerius, bet pasirinkimas lieka jums.</p>
     <p>Šį modelį perėmiau iš darbo su oConsulting. Didelės konsultacinės įmonės stiprios ten, kur vadovams reikia išsamios strategijos ir plėtros plano. oConsulting užima kitą vaidmenį: į įmonę atvyksta patyręs specialistas, analizuoja procesą vietoje, randa klaidas ir per trumpą laiką duoda išmatuojamą rezultatą. Mano vaidmuo tas pats: greitas startas ir rezultatas jūsų procese, o strateginiai sprendimai priimami jau turint skaičius.</p>
-    <p><strong>Pirmas žingsnis:</strong> paskirti vieno proceso savininką ir leisti diagnostiką vienoje komandoje. Iš jūsų pusės dalyvauja proceso savininkas ir IT atstovas.</p>
+  </div>
+</section>
+
+<section class="section" id="nedarau">
+  <span class="eyebrow">Ribos</span>
+  <h2>Ko nedarau</h2>
+  <ul class="list-plain no-list">
+    <li>Nepardavinėju įrankių ar licencijų. Modelio ir įrankių pasirinkimas priimamas po piloto.</li>
+    <li>Nediegiu sistemos visai įmonei iš karto. Pirmiausia vienas procesas.</li>
+    <li>Nekuriu ilgų strategijų, kurios lieka stalčiuje.</li>
+    <li>Neatiduodu sprendimo DI. Žmogus tvirtina, o kai trūksta šaltinio, pakeitimas sustoja.</li>
+  </ul>
+</section>
+
+<section class="section" id="duk">
+  <span class="eyebrow">Klausimai</span>
+  <h2>Dažni klausimai</h2>
+  <div class="faq">
+    <details><summary>Ar reikia pirkti naujų įrankių?</summary><p>Ne prieš diagnostiką. Sprendimas dėl modelio ir licencijų priimamas po piloto, kai jau matote skaičių.</p></details>
+    <details><summary>Ką turi skirti mūsų komanda?</summary><p>Proceso savininką ir IT atstovą. Tikslus laiko poreikis aptariamas po pirmo pokalbio.</p></details>
+    <details><summary>Kokius duomenis mato DI?</summary><p>Pilote dirbama su vienu procesu ir tik skaitymo jungtimis. Kokie duomenys naudojami, sprendžiate jūs.</p></details>
+    <details><summary>Kas, jei pilotas nepasiteisina?</summary><p>Po antro vadovų sprendimo galite jį keisti arba stabdyti. Didesnių investicijų iki to laiko nebūna.</p></details>
+    <details><summary>Ar padėsite statyti mastelį visai įmonei?</summary><p>Taip, kartu su mano rekomenduojama arba jūsų pasirinkta IT kompanija. Mastelį statome tik su skaičiumi iš piloto.</p></details>
   </div>
 </section>
 
@@ -165,30 +232,27 @@ footer{border-top:1px solid var(--line);padding-top:16px;font-size:15px;color:va
   </div>
   <div class="proofs">
     <div class="card"><b>Tvarka prieš įrankį</b><p>Nuo 2021 m. dirbu su vokiečių gamybos efektyvumo konsultantais oConsulting ir eLearningFactory, esu eLearningFactory bendrasavininkas. Lean, Six Sigma, 5S ir vizualinis valdymas gamyklose, Green Belt ir Black Belt programos. Ten galioja taisyklė, kurią taikau ir DI: netvarkingas procesas neautomatizuojamas, pirmiausia jis sutvarkomas.</p></div>
-    <div class="card"><b>Statau pats</b><p>Klinikai pastačiau pacientų platformą nuo idėjos iki kasdienio naudojimo: klausimyną, gydytojo ir kineziterapeuto programas, CRM ir ataskaitas. Architektūrą ir klinikinę logiką suprojektavau pats, metodą patvirtino gydytojai. Nuo 2011 m. vadovavau IT produktus kuriančioms įmonėms ir komandoms ir buvau jų bendraturtis.</p></div>
-    <div class="card"><b>Žmonės priima pokytį</b><p>Dvidešimt metų prieš DI tą patį dariau per marketingą ir mokymus: dvylika metų dėsčiau marketingą KTU, buvau pranešėjas „Verslo žinių“ konferencijose, vedžiau mokymus įmonėms. Sudėtingą dalyką paversti tokiu, kurį žmonės iš tikrųjų naudoja, yra mano pagrindinis darbas.</p></div>
-    <div class="card"><b>Kaip dirbu</b><p>Nepriklausomas partneris pirmajam etapui: maža komanda, greitas prisitaikymas prie besikeičiančių sąlygų, rezultatas per savaites, ne per ketvirčius. Taip dirbu ir su vokiečių gamybos efektyvumo konsultantais. Didesnės investicijos priimamos jau žinant, kas pasiteisino.</p></div>
+    <div class="card"><b>Nuo architektūros iki kasdienio naudojimo</b><p>Klinikai pastačiau pacientų platformą nuo idėjos iki kasdienio naudojimo: klausimyną, gydytojo ir kineziterapeuto programas, CRM ir ataskaitas. Architektūrą ir klinikinę logiką suprojektavau pats, metodą patvirtino gydytojai. Nuo 2011 m. vadovavau IT produktus kuriančioms įmonėms ir komandoms ir buvau jų bendraturtis.</p></div>
+    <div class="card"><b>Žmonės priima pokytį</b><p>Dvidešimt metų prieš DI tą patį dariau per marketingą ir mokymus: dvylika metų dėsčiau marketingą KTU, buvau pranešėjas „Verslo žinių“ konferencijose, vedžiau mokymus įmonėms. Tai padeda komandai naują darbo būdą perkelti į kasdienę veiklą.</p></div>
+    <div class="card"><b>Kaip dirbu</b><p>Nepriklausomas partneris pirmajam etapui: greitas ir lankstus startas, be ilgų derinimų. Taip dirbu ir su vokiečių gamybos efektyvumo konsultantais: maža komanda, rezultatas per savaites, ne per ketvirčius. Didesnės investicijos priimamos jau žinant, kas pasiteisino.</p></div>
   </div>
 </section>
 
-<section class="section" id="kontaktai">
-  <span class="eyebrow">Kontaktai</span>
-  <h2>Pokalbis apie jūsų pirmą procesą</h2>
-  <div class="card contact">
-    <div>Žilvinas Freigofas</div>
-    <div>Tel. <span>+370 614 48690</span></div>
-    <div>El. paštas <span>freigofas@gmail.com</span></div>
-    <div class="note">Rašykite arba skambinkite. Pirmas pokalbis trunka apie pusvalandį: aptariame, kuris procesas jūsų įmonėje tinka pilotui.</div>
-  </div>
+<section class="cta-box" id="kontaktai">
+  <h2>Kvieskite mane pradžiai, mastelį statome kartu</h2>
+  <p>Diagnostiką ir pilotą vedu pats: greitai, lanksčiai ir be ilgų derinimų. Per kelias savaites vienam procesui išbandoma pagrindinė būsimos sistemos logika ir gaunamas skaičius. Tik tada investuojate į mastelį visai įmonei, kartu su mano rekomenduojama arba jūsų pasirinkta IT kompanija.</p>
+  <p class="step1"><strong>Pirmas žingsnis:</strong> paskirti vieno proceso savininką ir leisti diagnostiką vienoje komandoje. Iš jūsų pusės dalyvauja proceso savininkas ir IT atstovas.</p>
+  <div class="cta-who"><img src="zilvinas-freigofas.jpg" width="88" height="88" alt="Žilvinas Freigofas" loading="lazy">
+  <div class="ct"><div>Žilvinas Freigofas</div><div>Tel. <span>+370 614 48690</span></div><div>El. paštas <span>freigofas@gmail.com</span></div></div></div>
 </section>
 
 <section class="section" id="saltiniai">
   <details class="sources">
-  <summary>Šaltiniai</summary>
+  <summary>Šaltiniai (3)</summary>
   <ul>
     <li class="src">Shumailov I. ir kt., „AI models collapse when trained on recursively generated data“, Nature, 2024. nature.com, s41586-024-07566-y.</li>
     <li class="src">Moffatt prieš Air Canada, Britų Kolumbijos civilinių ginčų tribunolas, 2024-02-14: bendrovė atsako už pokalbių roboto pateiktą neteisingą informaciją. americanbar.org.</li>
-    <li class="src">S&P Global Market Intelligence, 2025-03-14: 42 % įmonių atsisakė daugumos DI iniciatyvų (2024 m. 17 %). Pranešė CIO Dive.</li>
+    <li class="src">S&P Global Market Intelligence, 2025-03-14: daugiau kaip 1 000 respondentų Šiaurės Amerikoje ir Europoje: 42 % įmonių atsisakė daugumos DI iniciatyvų (2024 m. 17 %). Pranešė CIO Dive.</li>
   </ul>
   </details>
 </section>
@@ -201,3 +265,5 @@ footer{border-top:1px solid var(--line);padding-top:16px;font-size:15px;color:va
 </div>
 </body>
 </html>
+
+</body></html>
