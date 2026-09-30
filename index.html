@@ -62,8 +62,12 @@ header{display:flex;flex-direction:column;gap:22px;padding-top:6px}
 .step.gate::before{background:var(--hu);border-color:var(--hu)}
 .step .no{font:500 13px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .step p{font-size:16px}
-.proofs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.proofs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
 .proofs .card b{font:500 13px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.author{display:flex;gap:24px;align-items:center}
+.author img{width:160px;height:160px;border-radius:6px;object-fit:cover;flex:none;border:1px solid var(--line)}
+.author-text{display:flex;flex-direction:column;gap:12px;min-width:0}
+@media (max-width:560px){.author{flex-direction:column;align-items:flex-start}.author img{width:128px;height:128px}}
 .contact{font-size:17px;display:flex;flex-direction:column;gap:6px}
 .contact span{user-select:all}
 .src{font-size:15px;color:var(--muted);word-break:break-word}
@@ -148,8 +152,13 @@ footer{border-top:1px solid var(--line);padding-top:16px;font-size:15px;color:va
 
 <section class="section" id="autorius">
   <span class="eyebrow">Autorius</span>
-  <h2>Žilvinas Freigofas. Keičiu, kaip įmonės dirba su DI</h2>
-  <p>Komandos dažniausiai stringa ne dėl technologijų. Jos nepasitiki nauju darbo būdu, todėl padedu jį įdiegti taip, kad jis išliktų ir tada, kai manęs šalia nebėra.</p>
+  <div class="author">
+    <img src="zilvinas-freigofas.jpg" width="160" height="160" alt="Žilvinas Freigofas" loading="lazy">
+    <div class="author-text">
+      <h2>Žilvinas Freigofas. Keičiu, kaip įmonės dirba su DI</h2>
+      <p>Komandos dažniausiai stringa ne dėl technologijų. Jos nepasitiki nauju darbo būdu, todėl padedu jį įdiegti taip, kad jis išliktų ir tada, kai manęs šalia nebėra.</p>
+    </div>
+  </div>
   <div class="proofs">
     <div class="card"><b>Tvarka prieš įrankį</b><p>Nuo 2021 m. dirbu su vokiečių gamybos efektyvumo konsultantais oConsulting ir eLearningFactory, esu eLearningFactory bendrasavininkas. Lean, Six Sigma, 5S ir vizualinis valdymas gamyklose, Green Belt ir Black Belt programos. Ten galioja taisyklė, kurią taikau ir DI: netvarkingas procesas neautomatizuojamas, pirmiausia jis sutvarkomas.</p></div>
     <div class="card"><b>Statau pats</b><p>Klinikai pastačiau pacientų platformą nuo idėjos iki kasdienio naudojimo: klausimyną, gydytojo ir kineziterapeuto programas, CRM ir ataskaitas. Architektūrą ir klinikinę logiką suprojektavau pats, metodą patvirtino gydytojai. Pastaruosius 13 metų vadovavau IT sprendimus kuriančioms veikloms ir buvau jų bendraturtis.</p></div>
