@@ -68,6 +68,10 @@ header{display:flex;flex-direction:column;gap:22px;padding-top:6px}
 .author img{width:160px;height:160px;border-radius:6px;object-fit:cover;flex:none;border:1px solid var(--line)}
 .author-text{display:flex;flex-direction:column;gap:12px;min-width:0}
 @media (max-width:560px){.author{flex-direction:column;align-items:flex-start}.author img{width:128px;height:128px}}
+.sources summary{cursor:pointer;font:500 13px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:4px 0;list-style-position:inside}
+.sources summary:hover{color:var(--ink)}
+.sources summary:focus-visible{outline:3px solid var(--ai);outline-offset:2px}
+.sources ul{margin-top:14px}
 .contact{font-size:17px;display:flex;flex-direction:column;gap:6px}
 .contact span{user-select:all}
 .src{font-size:15px;color:var(--muted);word-break:break-word}
@@ -161,7 +165,7 @@ footer{border-top:1px solid var(--line);padding-top:16px;font-size:15px;color:va
   </div>
   <div class="proofs">
     <div class="card"><b>Tvarka prieš įrankį</b><p>Nuo 2021 m. dirbu su vokiečių gamybos efektyvumo konsultantais oConsulting ir eLearningFactory, esu eLearningFactory bendrasavininkas. Lean, Six Sigma, 5S ir vizualinis valdymas gamyklose, Green Belt ir Black Belt programos. Ten galioja taisyklė, kurią taikau ir DI: netvarkingas procesas neautomatizuojamas, pirmiausia jis sutvarkomas.</p></div>
-    <div class="card"><b>Statau pats</b><p>Klinikai pastačiau pacientų platformą nuo idėjos iki kasdienio naudojimo: klausimyną, gydytojo ir kineziterapeuto programas, CRM ir ataskaitas. Architektūrą ir klinikinę logiką suprojektavau pats, metodą patvirtino gydytojai. Pastaruosius 13 metų vadovavau IT sprendimus kuriančioms veikloms ir buvau jų bendraturtis.</p></div>
+    <div class="card"><b>Statau pats</b><p>Klinikai pastačiau pacientų platformą nuo idėjos iki kasdienio naudojimo: klausimyną, gydytojo ir kineziterapeuto programas, CRM ir ataskaitas. Architektūrą ir klinikinę logiką suprojektavau pats, metodą patvirtino gydytojai. Nuo 2011 m. vadovavau IT produktus kuriančioms įmonėms ir komandoms ir buvau jų bendraturtis.</p></div>
     <div class="card"><b>Žmonės priima pokytį</b><p>Dvidešimt metų prieš DI tą patį dariau per marketingą ir mokymus: dvylika metų dėsčiau marketingą KTU, buvau pranešėjas „Verslo žinių“ konferencijose, vedžiau mokymus įmonėms. Sudėtingą dalyką paversti tokiu, kurį žmonės iš tikrųjų naudoja, yra mano pagrindinis darbas.</p></div>
     <div class="card"><b>Kaip dirbu</b><p>Nepriklausomas partneris pirmajam etapui: maža komanda, greitas prisitaikymas prie besikeičiančių sąlygų, rezultatas per savaites, ne per ketvirčius. Taip dirbu ir su vokiečių gamybos efektyvumo konsultantais. Didesnės investicijos priimamos jau žinant, kas pasiteisino.</p></div>
   </div>
@@ -179,12 +183,14 @@ footer{border-top:1px solid var(--line);padding-top:16px;font-size:15px;color:va
 </section>
 
 <section class="section" id="saltiniai">
-  <span class="eyebrow">Šaltiniai</span>
+  <details class="sources">
+  <summary>Šaltiniai</summary>
   <ul>
     <li class="src">Shumailov I. ir kt., „AI models collapse when trained on recursively generated data“, Nature, 2024. nature.com, s41586-024-07566-y.</li>
     <li class="src">Moffatt prieš Air Canada, Britų Kolumbijos civilinių ginčų tribunolas, 2024-02-14: bendrovė atsako už pokalbių roboto pateiktą neteisingą informaciją. americanbar.org.</li>
     <li class="src">S&P Global Market Intelligence, 2025-03-14: 42 % įmonių atsisakė daugumos DI iniciatyvų (2024 m. 17 %). Pranešė CIO Dive.</li>
   </ul>
+  </details>
 </section>
 
 <footer>
