@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>secondbrain.lt · Žilvinas Freigofas</title>
+<meta name="description" content="Keičiu, kaip įmonės dirba su DI. Diagnostika ir pilotas vienam procesui per kelias savaites, dar prieš perkant įrankius. Second Brain metodas įmonėms. MB Gila IT, Kaunas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Dizaino sistema ta pati kaip kliento puslapiuose (Čili v4.2). Spalvos: žalia = DI veiksmas, geltona = žmogaus sprendimas, raudona = stabdis, juoda = pagrindinis veiksmas. */
+:root{
+  --bg:#faf9f6; --surface:#ffffff; --ink:#171717; --muted:#6b6b6b; --line:#dedcd6; --line-strong:#171717;
+  --ai:#0b6e4f; --ai-ink:#ffffff; --hu:#f2c94c; --hu-ink:#171717; --stop:#b42318; --stop-ink:#ffffff;
+  --f-display:"Literata", Georgia, "Times New Roman", serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#161615; --surface:#1f1f1d; --ink:#ecebe6; --muted:#aaa8a0; --line:#3a3936; --line-strong:#ecebe6;
+  --ai:#2e9a72; --stop:#d9453a; color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;padding:0 16px 72px}
+.wrap{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:64px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(30px,5.6vw,42px);font-weight:700;line-height:1.12}
+h2{font-size:clamp(24px,4vw,28px);font-weight:700}
+h3{font-size:20px;font-weight:700;line-height:1.3}
+p,li{margin:0;max-width:66ch}
+ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-family:var(--f-mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lead{font-size:19px;line-height:1.5}
+.note{font-size:15px;line-height:1.5;color:var(--muted)}
+.brandbar{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap;padding:14px 0 10px;border-bottom:1px solid var(--line);font-size:15px;color:var(--muted)}
+.brandbar b{font-family:var(--f-display);font-size:17px;color:var(--ink)}
+.brandbar .who{color:var(--ink)}
+header{display:flex;flex-direction:column;gap:22px;padding-top:6px}
+.b{display:inline-block;font:600 13px/1 var(--f-body);letter-spacing:.02em;padding:5px 9px;border-radius:4px;vertical-align:middle;white-space:nowrap}
+.b-ai{background:var(--ai);color:var(--ai-ink)}
+.b-hu{background:var(--hu);color:var(--hu-ink)}
+.b-stop{background:var(--stop);color:var(--stop-ink)}
+.legend{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;font-size:16px}
+.legend div{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card h3{font-size:18px}
+.card p,.card li{font-size:16px}
+.section{display:flex;flex-direction:column;gap:20px;border-top:2px solid var(--line-strong);padding-top:18px}
+.scene{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line-strong);border-radius:6px;padding:20px 22px;display:flex;flex-direction:column;gap:12px}
+.slogan{font-family:var(--f-display);font-size:clamp(26px,4.4vw,34px);font-weight:700;line-height:1.2}
+.quote{font-family:var(--f-display);font-size:20px;line-height:1.45}
+.flow{display:flex;flex-wrap:wrap;gap:8px}
+.node{flex:1 1 140px;min-width:0;border-radius:6px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;font-size:15.5px;border:1px solid var(--line);background:var(--surface)}
+.node.ai{background:color-mix(in srgb,var(--ai) 12%,var(--surface))}
+.node.hu{background:color-mix(in srgb,var(--hu) 25%,var(--surface))}
+.node b{font-size:15px}
+.steps{display:flex;flex-direction:column;border-left:2px solid var(--line);margin-left:8px}
+.step{position:relative;padding:0 0 22px 24px;display:flex;flex-direction:column;gap:4px}
+.step::before{content:"";position:absolute;left:-7px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--line-strong)}
+.step.gate::before{background:var(--hu);border-color:var(--hu)}
+.step .no{font:500 13px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.step p{font-size:16px}
+.proofs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.proofs .card b{font:500 13px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.contact{font-size:17px;display:flex;flex-direction:column;gap:6px}
+.contact span{user-select:all}
+.src{font-size:15px;color:var(--muted);word-break:break-word}
+footer{border-top:1px solid var(--line);padding-top:16px;font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div>
+<div class="brandbar"><span><b>secondbrain.lt</b> · MB Gila IT</span><span class="who">Žilvinas Freigofas · Keičiu, kaip įmonės dirba su DI</span></div>
+</div>
+
+<header>
+  <div class="eyebrow">Įmonių vadovams ir savininkams</div>
+  <h1>Nuo vieno proceso iki išmatuoto rezultato per kelias savaites, dar prieš perkant įrankius.</h1>
+  <p class="lead">ChatGPT, Claude ar automatizavimo įrankiai yra tik priemonės. Rezultatą lemia tvarka: iš kokios informacijos jos dirba ir kas tvirtina jų darbą. Po piloto matote skaičių ir sprendžiate dėl plėtros.</p>
+  <div class="legend" aria-label="Spalvų reikšmės">
+    <div><span class="b b-ai">DI</span><span>surenka, sutikrina ir parengia.</span></div>
+    <div><span class="b b-hu">Žmogus</span><span>tvirtina, keičia arba sprendžia.</span></div>
+    <div><span class="b b-stop">Stabdis</span><span>trūksta šaltinio arba patikra nepraėjo, pakeitimas nekeliauja toliau.</span></div>
+  </div>
+  <div class="benefits">
+    <div class="card"><h3>Mažiau nuostolių</h3><p>Pasirinkto proceso informacija tikrinama pagal patvirtintą taisyklę. Neatitikimą tvirtintojas mato anksčiau nei klientas, o pilotas skaičiuoja, kiek jų sugauta.</p></div>
+    <div class="card"><h3>Greičiau ir tiksliau</h3><p>DI palygina šaltinius ir parengia pakeitimą, žmogus tik patvirtina. Matyti, kas patvirtino ir nuo kada reikšmė galioja.</p></div>
+    <div class="card"><h3>Daugiau laiko klientams</h3><p>Darbuotojai nebeieško, kuri versija teisinga. Žinios kaupiasi įmonėje, ne žmonių galvose ar pokalbių istorijoje.</p></div>
+  </div>
+</header>
+
+<section class="section" id="kodel">
+  <div class="scene">
+    <p class="slogan">Ką pasėsi, tą DI padaugins.</p>
+    <h3>Kodėl pradedu nuo tvarkos, ne nuo įrankio</h3>
+    <p>Šiandien daugelis įmonių DI diegia greitai: perka licencijas, procesus automatizuoja per kelias savaites. Bet automatas be žmogaus patikros klaidos neištaiso. Jis ją kartoja, kol kas nors pastebi. Mokslininkai rodo, kad DI modeliai, mokomi iš DI sukurto turinio, klaidas ne taiso, o negrįžtamai jas įtvirtina (Nature, 2024). Kai klaida pasiekia klientą, atsako įmonė: Air Canada teko atlyginti žalą už taisyklę, kurią klientui sugalvojo jos pokalbių robotas (2024). Pernai 42 % įmonių atsisakė daugumos savo DI iniciatyvų (S&P Global, 2025).</p>
+    <p>Šią pamoką išmokau dar prieš DI. Nuo 2021 m. Vokietijoje su oConsulting ir eLearningFactory dirbu griežtai reguliuojamoje farmacijos pramonėje. Ten galioja paprasta taisyklė: netvarkingas procesas neautomatizuojamas, nes klaida proceso viduryje kainuoja daugiau, nei sutaupo pagreitinimas.</p>
+    <p>Kai atsirado DI, aš irgi daug investavau į įrankius ir greitai pamačiau tą patį: be tvarkos kiekvienas naujas automatas klaidas daugina. Todėl jau dvejus metus praktikoje kuriu sistemą, kuri klaidų skaičių mažina. Iš jos atsirado Second Brain.</p>
+    <p><strong>Jūsų įmonei tai reiškia greitą pilotinį startą ir automatizavimą be padaugintų klaidų: DI dirba iš sutvarkytos informacijos, o kiekviena investicija į DI duoda išmatuojamą rezultatą.</strong></p>
+  </div>
+</section>
+
+<section class="section" id="metodas">
+  <span class="eyebrow">Metodas</span>
+  <h2>Second Brain: pirmiausia tvarka, paskui DI</h2>
+  <div class="card">
+    <p class="quote">Second Brain yra organizacijos antrosios smegenys: žmonių žinios, duomenys ir sprendimai surenkami į vieną patvirtintą bazę, DI agentai kiekvienam vaidmeniui dirba iš jos, žmogus sprendžia, o kiekviena klaida užrašoma ir, proceso savininkui nusprendus, tampa taisykle.</p>
+    <p class="note">Second Brain čia yra įmonės sistema: viena patvirtinta žinių bazė, iš kurios dirba ir žmonės, ir DI. Tai Lean logika, pritaikyta DI darbui.</p>
+  </div>
+  <h3>Kaip sistema veikia</h3>
+  <div class="flow" role="list">
+    <div class="node" role="listitem"><b>Šaltiniai</b>Sistemos, dokumentai, žmonių žinios</div>
+    <div class="node" role="listitem"><b>Patvirtinta bazė</b>Kiekvienas įrašas su savininku ir data</div>
+    <div class="node ai" role="listitem"><span class="b b-ai">DI</span>Agentai pagal vaidmenis dirba tik iš bazės</div>
+    <div class="node ai" role="listitem"><span class="b b-ai">DI</span>Automatinė patikra prieš kiekvieną rezultatą</div>
+    <div class="node hu" role="listitem"><span class="b b-hu">Žmogus</span>Tvirtina, taiso, sprendžia</div>
+  </div>
+  <p class="note"><span class="b b-hu">Žmogus</span> pataiso, pataisymas užrašomas, proceso savininkas sprendžia, ar tai taisyklė visiems agentams ir žmonėms. Tai kasdienis ciklas, ne vienkartinis projektas.</p>
+</section>
+
+<section class="section" id="kelias">
+  <span class="eyebrow">Kelias</span>
+  <h2>Du vadovų sprendimo taškai</h2>
+  <p>Pradžioje tikrinama viena darbo vieta, ne diegiama sistema visai įmonei. Etapų trukmė tikslinama po diagnostikos.</p>
+  <div class="steps">
+    <div class="step"><span class="no">Etapas 0 · Diagnostika</span><h3>Kur saugoma, naudojama ir keičiama informacija</h3><p>Stebima vietoje, kaip informacija iš tikrųjų keliauja. Surašoma, kur ji dubliuojasi ir kas ją keičia. Rezultatas: vienas pasirinktas procesas su savininku ir rodikliu.</p></div>
+    <div class="step gate"><span class="no">Vadovų sprendimas 1</span><h3><span class="b b-hu">Žmogus</span> ar šis procesas ir šis rodiklis</h3></div>
+    <div class="step"><span class="no">Etapas 1 · Duomenų tvarka vienam procesui</span><h3>5S duomenims</h3><p>Atrinkti, sutvarkyti, išvalyti, standartizuoti, palaikyti. Rezultatas: patvirtinta bazė, kiekvienas įrašas su šaltiniu ir patikros data.</p></div>
+    <div class="step"><span class="no">Etapas 2 · Pilotas</span><h3>Vienas procesas nauju būdu</h3><p><span class="b b-ai">DI</span> surenka ir palygina, <span class="b b-hu">žmogus</span> tvirtina ir publikuoja. Matuojama nuo pirmos dienos. Rezultatas: rodiklis prieš ir po.</p></div>
+    <div class="step gate"><span class="no">Vadovų sprendimas 2</span><h3><span class="b b-hu">Žmogus</span> tęsti, keisti ar stabdyti</h3><p>Tik po šio sprendimo svarstomi modeliai, licencijos, jungtys ir plėtra.</p></div>
+    <div class="step"><span class="no">Etapas 3 · Mastelis</span><h3>Kiti procesai, kitos komandos</h3><p>Tik su skaičiumi iš pirmo piloto. Pataisymų žurnalas virsta patvirtintomis taisyklėmis, žmonės mokosi su savo procesu, ne su pavyzdžiais iš kursų.</p></div>
+  </div>
+</section>
+
+<section class="section" id="kaip-dirbu">
+  <span class="eyebrow">Kaip dirbu su jumis</span>
+  <h2>Kvieskite mane pradžiai, mastelį statome kartu</h2>
+  <div class="card">
+    <p>Diagnostiką ir pilotą vedu pats: greitai, lanksčiai ir be ilgų derinimų. Per kelias savaites vienam procesui išbandoma pagrindinė būsimos sistemos logika ir gaunamas skaičius. Tik tada investuojate į mastelį visai įmonei. Mastelį statome kartu su jūsų IT skyriumi ir jūsų esamais tiekėjais. Jei prireiks papildomų pajėgumų, galiu pasiūlyti patikrintus partnerius, bet pasirinkimas lieka jums.</p>
+    <p>Šį modelį perėmiau iš darbo su oConsulting. Didelės konsultacinės įmonės stiprios ten, kur vadovams reikia išsamios strategijos ir plėtros plano. oConsulting užima kitą vaidmenį: į įmonę atvyksta patyręs specialistas, analizuoja procesą vietoje, randa klaidas ir per trumpą laiką duoda išmatuojamą rezultatą. Mano vaidmuo tas pats: greitas startas ir rezultatas jūsų procese, o strateginiai sprendimai priimami jau turint skaičius.</p>
+    <p><strong>Pirmas žingsnis:</strong> paskirti vieno proceso savininką ir leisti diagnostiką vienoje komandoje. Iš jūsų pusės dalyvauja proceso savininkas ir IT atstovas.</p>
+  </div>
+</section>
+
+<section class="section" id="autorius">
+  <span class="eyebrow">Autorius</span>
+  <h2>Žilvinas Freigofas. Keičiu, kaip įmonės dirba su DI</h2>
+  <p>Komandos dažniausiai stringa ne dėl technologijų. Jos nepasitiki nauju darbo būdu, todėl padedu jį įdiegti taip, kad jis išliktų ir tada, kai manęs šalia nebėra.</p>
+  <div class="proofs">
+    <div class="card"><b>Tvarka prieš įrankį</b><p>Nuo 2021 m. dirbu su vokiečių gamybos efektyvumo konsultantais oConsulting ir eLearningFactory, esu eLearningFactory bendrasavininkas. Lean, Six Sigma, 5S ir vizualinis valdymas gamyklose, Green Belt ir Black Belt programos. Ten galioja taisyklė, kurią taikau ir DI: netvarkingas procesas neautomatizuojamas, pirmiausia jis sutvarkomas.</p></div>
+    <div class="card"><b>Statau pats</b><p>Klinikai pastačiau pacientų platformą nuo idėjos iki kasdienio naudojimo: klausimyną, gydytojo ir kineziterapeuto programas, CRM ir ataskaitas. Architektūrą ir klinikinę logiką suprojektavau pats, metodą patvirtino gydytojai. Pastaruosius 13 metų vadovavau IT sprendimus kuriančioms veikloms ir buvau jų bendraturtis.</p></div>
+    <div class="card"><b>Žmonės priima pokytį</b><p>Dvidešimt metų prieš DI tą patį dariau per marketingą ir mokymus: dvylika metų dėsčiau marketingą KTU, buvau pranešėjas „Verslo žinių“ konferencijose, vedžiau mokymus įmonėms. Sudėtingą dalyką paversti tokiu, kurį žmonės iš tikrųjų naudoja, yra mano pagrindinis darbas.</p></div>
+    <div class="card"><b>Kaip dirbu</b><p>Nepriklausomas partneris pirmajam etapui: maža komanda, greitas prisitaikymas prie besikeičiančių sąlygų, rezultatas per savaites, ne per ketvirčius. Taip dirbu ir su vokiečių gamybos efektyvumo konsultantais. Didesnės investicijos priimamos jau žinant, kas pasiteisino.</p></div>
+  </div>
+</section>
+
+<section class="section" id="kontaktai">
+  <span class="eyebrow">Kontaktai</span>
+  <h2>Pokalbis apie jūsų pirmą procesą</h2>
+  <div class="card contact">
+    <div>Žilvinas Freigofas</div>
+    <div>Tel. <span>+370 614 48690</span></div>
+    <div>El. paštas <span>freigofas@gmail.com</span></div>
+    <div class="note">Rašykite arba skambinkite. Pirmas pokalbis trunka apie pusvalandį: aptariame, kuris procesas jūsų įmonėje tinka pilotui.</div>
+  </div>
+</section>
+
+<section class="section" id="saltiniai">
+  <span class="eyebrow">Šaltiniai</span>
+  <ul>
+    <li class="src">Shumailov I. ir kt., „AI models collapse when trained on recursively generated data“, Nature, 2024. nature.com, s41586-024-07566-y.</li>
+    <li class="src">Moffatt prieš Air Canada, Britų Kolumbijos civilinių ginčų tribunolas, 2024-02-14: bendrovė atsako už pokalbių roboto pateiktą neteisingą informaciją. americanbar.org.</li>
+    <li class="src">S&P Global Market Intelligence, 2025-03-14: 42 % įmonių atsisakė daugumos DI iniciatyvų (2024 m. 17 %). Pranešė CIO Dive.</li>
+  </ul>
+</section>
+
+<footer>
+  <div>MB Gila IT · įmonės kodas 307149697 · Kaunas</div>
+  <div>secondbrain.lt · 2026</div>
+</footer>
+
+</div>
+</body>
+</html>
